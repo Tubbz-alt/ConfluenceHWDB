@@ -55,6 +55,8 @@ def init_page(cid, devtype="", tag="", status="", site="", dryrun=False):
 
     p.setStatus(status)
 
+    p.buildProperty()
+
     comment = "Born: " + datetime.datetime.utcnow().isoformat(" ") + " UTC"
     new_title = devclass + " " + tag + ' - ' + title_base
 

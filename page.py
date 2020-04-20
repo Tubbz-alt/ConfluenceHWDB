@@ -193,6 +193,87 @@ class StatusPanel:
 </ac:macro>
 """)
 
+
+class Properties(object):
+    def __init__(self, key=["Testing", "Programming", "Location", "Mating Boards", "Notes"],value=["Incomplete", "Incomplete", "Lupe's Lab", "N/A", " "], link="", space=""):
+        self.__key   = key
+        self.__value = value
+        self.__link  = link
+        self.__space = space
+        if not self.isValid():
+            raise ValueError("Invalid Arguments to %s Properties"%self.__key)
+
+    def __str__(self):
+        if self.__key:
+            s += self.__key
+            s += " "
+        if self.__value:
+            s += self.__value
+            s += " "
+        if self.__space:
+            s += self.__space+"/"
+        if self.__link:
+            s += self.__link
+        return s
+    
+    def isBlank(self):
+        if self.__value or self.__link or self.__space:
+            return False
+        return True
+
+    def isValid(self):
+        return True
+        # While we still have blank pages with invalid fields
+        # we can't apply this check.
+        #return self.__key and (bool(self.__value)^bool(self.__link))
+    def getKey(self):
+        return self.__key
+
+    def getValue(self):
+        return self.__value
+
+    def getLink(self):
+        return self.__link
+
+    def getSpace(self):
+        return self.__space
+
+    def update(self, key=None, Kindex=0, value=None, Vindex=0, link=None, space=None):
+        if key:
+          if Kindex > 4:
+            self.__key.append(key)
+          else:
+            self.__key[Kindex]=key        
+        if value:
+          if Vindex > 4:
+            self.__value.append(value)
+          else:   
+            self.__value[Vindex]=value
+        if link:
+            self.__link = link
+        if space:
+            self.__space = space
+
+    def getMarkup(self):
+       
+       Template_insert = ""
+       for i in range(len(self.__key)):
+        Template_insert = Template_insert + "<tr><td>" + self.__key[i] + "</td><td>" + self.__value[i] + "</td></tr>"
+      
+
+       PROPERTIES_TEMPLATE = self.__PROPERTIES_TEMPLATE1 + Template_insert + self.__PROPERTIES_TEMPLATE2
+       return PROPERTIES_TEMPLATE
+         
+        
+        
+    __PROPERTIES_TEMPLATE1 = "<ac:structured-macro ac:macro-id=\"1dc754d0-d9b4-4309-9150-b4683060844a\" ac:name=\"details\" ac:schema-version=\"1\"><ac:rich-text-body><table><tbody>"    
+    
+    __PROPERTIES_TEMPLATE2 = "<tr><td colspan=\"1\">Test Files</td><td colspan=\"1\"><ac:structured-macro ac:macro-id=\"7f63b545-91a2-4d3c-a4a0-bcca81689133\" ac:name=\"expand\" ac:schema-version=\"1\"><ac:rich-text-body><p><ac:structured-macro ac:macro-id=\"1635c6c0-7fd6-484c-a2b2-6e49eb7270c1\" ac:name=\"attachments\" ac:schema-version=\"1\"><ac:parameter ac:name=\"upload\">false</ac:parameter></ac:structured-macro></p></ac:rich-text-body></ac:structured-macro></td></tr></tbody></table><p>&nbsp;</p><p>&nbsp;</p></ac:rich-text-body></ac:structured-macro>"
+
+    __LINK_TEMPLATE = Template('<ac:link><ri:page ri:content-title="$type" ri:space-key="$space"/></ac:link>')
+
+
+
 class FieldParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)
@@ -255,10 +336,14 @@ class Page:
             self.__fieldMap   = fp.fieldmap
             self.__status = self.__fieldMap.pop("Status", None)
             self.__fieldOrder.remove("Status")
+            self.__properties = Properties()
+
         else:
             self.__fieldOrder = []
             self.__fieldMap   = {}
             self.__status     = None
+            self.__properties = Properties()
+
             
         if not self.__status:
             self.__status = Field("Status", " ")
@@ -307,14 +392,49 @@ class Page:
             print "Page already contains field: %s"%field.getKey()
             return False
     
+    def buildProperty(self):
+      label = None
+      value = None
+      Lindex = 0
+      Vindex = 0
+      print "<enter> to end property keys, . to abort this page"
+      while True:
+          label = raw_input("Label: ").strip()
+          if label == ".":
+              raise AbortPage
+          if label == "":
+              break
+          try:
+            value = raw_input("Corresponding Value (<enter> for none): ").strip()
+            if value == ".":
+               raise AbortPage
+            if value =="":
+              value = "-"
+            try:
+               self.__properties.update(label,Lindex, value, Vindex)
+               Lindex += 1
+               Vindex += 1
+            except ValueError:
+               pass  
+          except ValueError:
+            pass
+      return True
+              
+             
+       
+    def addProperty(self, key, value):
+      self.properties.update(key,len(self.properties._key),value,len(self.properties.__value))
+      return True
+    
     def getMarkup(self):
         fields = []
         for f in self.__fieldOrder:
             fields.append(self.__fieldMap.get(f))
         info = InfoPanel(fields)
         status = StatusPanel(self.__status)
+       
         
-        return info.getMarkup() + status.getMarkup() + self.__ATTACHMENT_TEMPLATE
+        return info.getMarkup() + status.getMarkup() + self.__properties.getMarkup()
 
     __ATTACHMENT_TEMPLATE = """
 <ac:macro ac:name="attachments">
