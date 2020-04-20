@@ -1,0 +1,18 @@
+#-----------------------------------------------------------
+# Vivado v2016.3 (64-bit)
+# SW Build 1682563 on Mon Oct 10 19:07:26 MDT 2016
+# IP Build 1681267 on Mon Oct 10 21:28:31 MDT 2016
+# Start of session at: Wed Mar 13 16:47:36 2019
+# Process ID: 19270
+# Current directory: /afs/slac.stanford.edu/g/reseng/vol10/hwdb
+# Command line: vivado -mode tcl
+# Log file: /afs/slac.stanford.edu/g/reseng/vol10/hwdb/vivado.log
+# Journal file: /afs/slac.stanford.edu/g/reseng/vol10/hwdb/vivado.jou
+#-----------------------------------------------------------
+open_hw
+connect_hw_server
+get_hw_target *13b36b5e01
+current_hw_target [get_hw_target *13b36b5e01]
+open_hw_target -quiet
+open_hw_target 
+quit
