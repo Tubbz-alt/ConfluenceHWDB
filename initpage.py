@@ -166,7 +166,7 @@ AssetTag, Page Title, or other identifying content. It may need to be quoted.
                         help="Board type")
     parser.add_argument("-t", "--tag", 
                         help="Asset tag")
-    parser.add_argument("-s", "--status", default="Received, Location = Unknown",
+    parser.add_argument("-s", "--status", default="Received",
                         help="Board status")
     parser.add_argument("-l", "--loc", 
                         help="Board site")
