@@ -195,7 +195,7 @@ class StatusPanel:
 
 
 class Properties(object):
-    def __init__(self, key=["Testing", "Programming", "Location", "Mating Boards", "Notes"],value=["Incomplete", "Incomplete", "Lupe's Lab", "N/A", " "], link="", space=""):
+    def __init__(self, key=["Testing", "Programming", "Location", "Mating Board(s)","Purchase Info", "Notes"],value=["-", "-", "<ac:structured-macro ac:macro-id=\"8242231c-7224-4df2-9536-63ceb7f114fd\" ac:name=\"parentpagelink\" ac:schema-version=\"1\" />", "-","-", "-"], link="", space=""):
         self.__key   = key
         self.__value = value
         self.__link  = link
@@ -404,20 +404,23 @@ class Page:
               raise AbortPage
           if label == "":
               break
-          try:
+          elif label == "Location":
+              value = "<ac:structured-macro ac:macro-id=\"8242231c-7224-4df2-9536-63ceb7f114fd\" ac:name=\"parentpagelink\" ac:schema-version=\"1\" />"
+              self.__properties.update(label,Lindex, value, Vindex)
+              Lindex += 1
+              Vindex += 1
+          else:
             value = raw_input("Corresponding Value (<enter> for none): ").strip()
             if value == ".":
                raise AbortPage
             if value =="":
               value = "-"
             try:
-               self.__properties.update(label,Lindex, value, Vindex)
-               Lindex += 1
-               Vindex += 1
+              self.__properties.update(label,Lindex, value, Vindex)
+              Lindex += 1
+              Vindex += 1
             except ValueError:
-               pass  
-          except ValueError:
-            pass
+              pass  
       return True
               
              
