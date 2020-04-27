@@ -135,18 +135,15 @@ def main(args):
 if __name__ == "__main__":
 
     desc = """ 
-This program is used to update/add an arbitrary field to the 
+This program is used to update/add/remove fields from the properties table in the 
 Hardeware Database. 
 """
     epilog = """
 Parameters that are not supplied on the command line will be prompted for.
 
-The LABEL is used for the key of the field.
+The LABEL is used for the key of the field (column 1).
 
-The VALUE is plain text that will be displayed right of the label.
-
-The LINK and SPACE can be specified in place of the label if a link 
-is desired. The SPACE will default to The Hardware Tracking Space.
+The VALUE is plain text that corresponds to the LABEL (column 2).
 
 The KEYWORD for searching for a page can be the pageId, URL, Short URL, 
 AssetTag, Page Title, or other identifying content. It may need to be quoted. 
@@ -156,12 +153,12 @@ AssetTag, Page Title, or other identifying content. It may need to be quoted.
                                      epilog=epilog,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
 
-    parser.add_argument("-k", "--key", metavar="LABEL",
-                        help="The label to add")
+    parser.add_argument("-l", "--label", metavar="LABEL",
+                        help="The label to add to column 1")
 
     valink_group = parser.add_mutually_exclusive_group()
     valink_group.add_argument("-v", "--value",
-                              help="The value to add")
+                              help="The value to add to column 2")
     valink_group.add_argument("-l", "--link", 
                               help="Confluence page Title to link to")
 
@@ -172,10 +169,6 @@ AssetTag, Page Title, or other identifying content. It may need to be quoted.
     parser.add_argument("-p", "--page",
                         help="Search term for HWDB page", 
                         metavar="KEYWORD")
-    parser.add_argument("-f", "--force", help="Allow overwriting of existing values",
-                        action="store_true")
-    parser.add_argument("-d", "--dryrun", action="store_true",
-                        help="Do not save new page to HWDB")
 
     args = parser.parse_args()
 

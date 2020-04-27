@@ -211,6 +211,12 @@ def addComment(title, comment):
     args = ["--action", "addComment", "--title", title, "--comment", comment]
     rc, stdout, stderr = _run(args)
     return (False if rc else True)
+    
+def addLabel(label, cid):
+    args = ["--action", "addLabels", "--labels", label, "--id", cid]
+    rc, stdout, stderr = _run(args)
+    return (False if rc else True)
+    
 
 def getComments(title):
     args = ["--action", "getComments", "--title", title]

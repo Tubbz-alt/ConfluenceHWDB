@@ -194,8 +194,8 @@ class StatusPanel:
 """)
 
 
-class Properties(object):
-    def __init__(self, key=["Testing", "Programming", "Location", "Mating Board(s)","Purchase Info", "Notes"],value=["-", "-", "<ac:structured-macro ac:macro-id=\"8242231c-7224-4df2-9536-63ceb7f114fd\" ac:name=\"parentpagelink\" ac:schema-version=\"1\" />", "-","-", "-"], link="", space=""):
+class Properties(object): #Shows up as a table on the page
+    def __init__(self, key=["Mating Board(s)", "Physical Location","Programming","Purchase Info", "Testing", "Notes"],value=["-", "-", "-", "-","-", "-"], link="", space=""):
         self.__key   = key
         self.__value = value
         self.__link  = link
@@ -240,14 +240,14 @@ class Properties(object):
 
     def update(self, key=None, Kindex=0, value=None, Vindex=0, link=None, space=None):
         if key:
-          if Kindex > 4:
+          if Kindex > 4: #For adding new entries
             self.__key.append(key)
-          else:
+          else: #For overwriting the defaults
             self.__key[Kindex]=key        
         if value:
-          if Vindex > 4:
+          if Vindex > 4: #for adding new entries
             self.__value.append(value)
-          else:   
+          else:   #For overwriting the defaults
             self.__value[Vindex]=value
         if link:
             self.__link = link
@@ -257,7 +257,7 @@ class Properties(object):
     def getMarkup(self):
        
        Template_insert = ""
-       for i in range(len(self.__key)):
+       for i in range(len(self.__key)): #turns the key/value objects into a string that can be inserted into the right place in the Template
         Template_insert = Template_insert + "<tr><td>" + self.__key[i] + "</td><td>" + self.__value[i] + "</td></tr>"
       
 
@@ -266,7 +266,7 @@ class Properties(object):
          
         
         
-    __PROPERTIES_TEMPLATE1 = "<ac:structured-macro ac:macro-id=\"1dc754d0-d9b4-4309-9150-b4683060844a\" ac:name=\"details\" ac:schema-version=\"1\"><ac:rich-text-body><table><tbody>"    
+    __PROPERTIES_TEMPLATE1 = "<ac:structured-macro ac:macro-id=\"1dc754d0-d9b4-4309-9150-b4683060844a\" ac:name=\"details\" ac:schema-version=\"1\"><ac:rich-text-body><table><tbody><tr><td>HWDB Location</td><td><ac:structured-macro ac:macro-id=\"8242231c-7224-4df2-9536-63ceb7f114fd\" ac:name=\"parentpagelink\" ac:schema-version=\"1\" /></td></tr>"    
     
     __PROPERTIES_TEMPLATE2 = "<tr><td colspan=\"1\">Test Files</td><td colspan=\"1\"><ac:structured-macro ac:macro-id=\"7f63b545-91a2-4d3c-a4a0-bcca81689133\" ac:name=\"expand\" ac:schema-version=\"1\"><ac:rich-text-body><p><ac:structured-macro ac:macro-id=\"1635c6c0-7fd6-484c-a2b2-6e49eb7270c1\" ac:name=\"attachments\" ac:schema-version=\"1\"><ac:parameter ac:name=\"upload\">false</ac:parameter></ac:structured-macro></p></ac:rich-text-body></ac:structured-macro></td></tr></tbody></table><p>&nbsp;</p><p>&nbsp;</p></ac:rich-text-body></ac:structured-macro>"
 
@@ -421,9 +421,7 @@ class Page:
               Vindex += 1
             except ValueError:
               pass  
-      return True
-              
-             
+      return True            
        
     def addProperty(self, key, value):
       self.properties.update(key,len(self.properties._key),value,len(self.properties.__value))

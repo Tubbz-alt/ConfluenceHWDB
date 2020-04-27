@@ -57,6 +57,9 @@ def init_page(cid, devtype="", tag="", status="", site="", dryrun=False):
 
     p.buildProperty()
 
+    label = raw_input("Page Tag: ").strip()
+    cli.addLabel (label, cid)
+
     comment = "Born: " + datetime.datetime.utcnow().isoformat(" ") + " UTC"
     new_title = devclass + " " + tag + ' - ' + title_base
 
