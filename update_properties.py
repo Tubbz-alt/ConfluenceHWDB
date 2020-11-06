@@ -25,8 +25,6 @@ def updateProperty(cid):
         return cli.storePage(p.getMarkup(), cid=cid)    
     
       if TypeChange == "1":
-        Lindex = len(p.__properties.__key)
-        Vindex = len(p.__properties.__value)
         print "<enter> to end property additions, . to abort this page"
         while True:
           NewLabel = raw_input("New Label: ").strip()
@@ -41,9 +39,8 @@ def updateProperty(cid):
             if NewValue =="":
               break
             try:
-              p.__properties.update(NewLabel,Lindex, NewValue, Vindex)
-              Lindex += 1
-              Vindex += 1
+              p.addProperty(NewLabel, NewValue)
+              return cli.storePage(p.getMarkup(), cid=cid)            
             except ValueError:
               pass  
           except ValueError:
@@ -159,8 +156,7 @@ AssetTag, Page Title, or other identifying content. It may need to be quoted.
     valink_group = parser.add_mutually_exclusive_group()
     valink_group.add_argument("-v", "--value",
                               help="The value to add to column 2")
-    valink_group.add_argument("-l", "--link", 
-                              help="Confluence page Title to link to")
+    
 
     parser.add_argument("-s", "--space",
                         help="Confluence space to find link in. Defaults to %s"%page.SPACE_KEY, 
