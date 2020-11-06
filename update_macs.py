@@ -25,15 +25,24 @@ def add_macs(cid, idx=0, macs=[], force=False, dryrun=False):
             except ValueError:
                 return False
     else:
-        try:
-            mac_fields = fields.buildMACFields(idx)
+       try:
+            i=0
+            print "<enter> to end MAC additions, . to abort this page"
+            while True:
+                NewMAC = raw_input("MAC ADDRESS: ").strip()
+                if NewMAC == ".":
+                  raise AbortPage
+                if NewMAC == "":
+                  break          
+                else:
+                    if i==0:
+                        MACval = "MAC " + str(i) + ": " + NewMAC
+                    else:
+                        MACval = MACval + "<br>" + "MAC " + str(i) + ": " + NewMAC + "</br>"
+                    i=i+1   
+            p.addProperty("MAC Addresses", MACval)
         except fields.AbortPage:
             print "Page Aborted"
-            return False
-
-    for f in mac_fields:
-        if not f or not p.addField(f, force=force):
-            print "Couldn't add MAC %s - Aborting Page Update"%f
             return False
 
     print 80*"*"
