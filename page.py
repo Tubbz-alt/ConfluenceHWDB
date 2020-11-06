@@ -195,7 +195,7 @@ class StatusPanel:
 
 
 class Properties(object): #Shows up as a table on the page
-    def __init__(self, key=["Mating Board(s)", "Physical Location","Programming","Purchase Info", "Testing", "Notes"],value=["-", "-", "-", "-","-", "-"], link="", space=""):
+    def __init__(self, key=["Mating Board(s)", "Physical Location","Programming","Purchase Info","Fabricated By", "Testing", "Notes"],value=["-","-", "-", "-", "-","-", "-"], link="", space=""):
         self.__key   = key
         self.__value = value
         self.__link  = link
@@ -228,9 +228,15 @@ class Properties(object): #Shows up as a table on the page
         #return self.__key and (bool(self.__value)^bool(self.__link))
     def getKey(self):
         return self.__key
+    
+    def getLKey(self):
+        return len(self.__key)
 
     def getValue(self):
         return self.__value
+
+    def getLValue(self):
+        return len(self.__value)
 
     def getLink(self):
         return self.__link
@@ -423,8 +429,10 @@ class Page:
               pass  
       return True            
        
-    def addProperty(self, key, value):
-      self.properties.update(key,len(self.properties._key),value,len(self.properties.__value))
+    def addProperty(self,key, value):
+      print self.__properties.getLKey()+2
+      print self.__properties.getLValue()+2 
+      self.__properties.update(key,self.__properties.getLKey()+2,value,self.__properties.getLValue()+2)
       return True
     
     def getMarkup(self):
